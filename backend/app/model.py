@@ -53,7 +53,7 @@ class Board(Base):
     createdAt = Column('createdAt', DateTime, default=datetime.now())
     updatedAt = Column('updatedAt', DateTime, default=datetime.now())
     hit = Column('hit', Integer, default=0)
-    imgurl = Column('imgPath', String(100))
+    imgPath = Column('imgPath', String(100))
 
 board_table = Table(
     'tb_board',
@@ -76,6 +76,7 @@ class Reply(Base):
     rid = Column('rid', Integer, primary_key=True, autoincrement=True)
     bid = Column('cid', Integer, ForeignKey('tb_board.bid'))
     uid = Column('uid', Integer, ForeignKey('tb_user.uid'))
+    reply = Column('reply', String(1000), nullable=False),
     createdAt = Column('createdAt', DateTime, default=datetime.now())
     updatedAt = Column('updatedAt', DateTime, default=datetime.now())
 
@@ -85,6 +86,7 @@ reply_table = Table(
     Column('rid', Integer, primary_key=True, autoincrement=True),
     Column('cid', Integer, ForeignKey('tb_board.bid')),
     Column('uid', Integer, ForeignKey('tb_user.uid')),
+    Column('reply', String(1000), nullable=False),
     Column('createdAt', DateTime, default=datetime.now()),
     Column('updatedAt', DateTime, default=datetime.now())
 )

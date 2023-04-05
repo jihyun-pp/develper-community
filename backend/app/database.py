@@ -7,7 +7,11 @@ DATABASE = 'mysql+pymysql://root:1234@0.0.0.0:3307/fastapi'
 engine = create_engine(DATABASE, echo=True)
 
 SessionLocal = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    sessionmaker(
+        autocommit=False,
+        autoflush=False,
+        bind=engine
+    )
 )
 
 Base = declarative_base()   # 실제 연결

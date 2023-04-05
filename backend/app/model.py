@@ -6,6 +6,7 @@ from datetime import datetime
 
 metadata = MetaData()  # 테이블의 메타 정보 담을 객체
 
+<<<<<<< HEAD
 class User(Base):
     __tablename__ = 'tb_user'
 
@@ -16,6 +17,18 @@ class User(Base):
     email = Column('email', String(100))
     auth = Column('auth', String(100))
     createdAt = Column('createdAt', DateTime, default=datetime.now())
+=======
+# class User(Base):
+#     __tablename__ = 'tb_user'
+#
+#     uid = Column('uid', Integer, primary_key=True, autoincrement=True)
+#     user_id = Column('user_id', String(100), unique=True, nullable=False)
+#     password = Column('password', String(100))
+#     username = Column('username', String(100))
+#     email = Column('email', String(100))
+#     auth = Column('auth', String(100))
+#     createdAt = Column('createdAt', DateTime, default=datetime.now())
+>>>>>>> 06dc645623df63f6814aed9f9d1eca4a7837954e
 
 
 user_table = Table(

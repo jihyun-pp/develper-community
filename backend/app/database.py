@@ -14,7 +14,6 @@ SessionLocal = scoped_session(
 Base = declarative_base()   # 실제 연결
 Base.query = SessionLocal.query_property()
 
-@contextlib.contextmanager
 def get_db():
     try:
         db = SessionLocal()

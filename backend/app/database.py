@@ -1,3 +1,4 @@
+import contextlib
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -13,6 +14,7 @@ SessionLocal = scoped_session(
 Base = declarative_base()   # 실제 연결
 Base.query = SessionLocal.query_property()
 
+@contextlib.contextmanager
 def get_db():
     try:
         db = SessionLocal()

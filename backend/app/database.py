@@ -2,8 +2,18 @@ import contextlib
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
+from dotenv import load_dotenv
+from os import environ
 
-DATABASE = 'mysql+pymysql://root:1234@0.0.0.0:3307/fastapi'
+load_dotenv()
+
+DATABASE = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+    environ['DB_USER'],
+    environ['DB_PW'],
+    environ['DB_HOST'],
+    environ['DB_PORT'],
+    environ['DB_NAME']
+)
 
 engine = create_engine(DATABASE, echo=True)
 

@@ -1,24 +1,24 @@
-from fastapi import APIRouter, Depends, HTTPException
-from app.crud import user as crud
-from app.database import get_db
-from sqlalchemy.orm import Session
-import app.schema.schemas as schema
-from app.model import User
-from starlette import status
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
-from jose import jwt, JWTError
 from dotenv import load_dotenv
 from os import environ
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+from starlette import status
+from passlib.context import CryptContext
+from jose import jwt, JWTError
+from datetime import datetime, timedelta
+from typing import Optional
 
-load_dotenv()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/login")
+import app.schema.schemas as schema
+from app.crud import user as crud
+from app.database import get_db
 
 router = APIRouter(
     prefix='/api/user',
 )
+
+load_dotenv()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/login")
 
 @router.get("/list", response_model=list[schema.User])
 def get_user_list(db: Session = Depends(get_db)):

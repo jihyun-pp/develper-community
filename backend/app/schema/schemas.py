@@ -1,5 +1,6 @@
 from pydantic import BaseModel, validator, EmailStr
 from datetime import datetime
+from typing import Optional
 
 class User(BaseModel):
     uid: int
@@ -7,7 +8,7 @@ class User(BaseModel):
     password: str
     username: str
     email: str
-    auth: str | None = None  # nullable
+    auth: str | None = None
     createdAt: datetime
     updatedAt: datetime
 
@@ -27,6 +28,11 @@ class CreateUser(BaseModel):
             raise ValueError('빈 값은 허용되지 않습니다.')
         return v
 
+    @validator('user_id')
+    def userid_alphanumeric(cls, v):
+        assert v.isalnum(), 'must be alphanumeric'
+        return v
+
     @validator('password2')
     def password_match(cls, v, values):
         if 'password1' in values and v != values['password1']:
@@ -37,7 +43,7 @@ class CreateUser(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
-    user_id: str
+    username: str
 
 
 class Category(BaseModel):
@@ -50,17 +56,42 @@ class Category(BaseModel):
 
 class Board(BaseModel):
     bid: int
-    category: str
-    uid: int  # user
+    category: int
+    uid: int
     title: str
     content: str
     createdAt: datetime
     updatedAt: datetime
     hit: int
-    imgPath: str
+    imgPath: str | None = None
 
     class Config:
         orm_mode = True
+
+class CreateBoard(BaseModel):
+    category: int
+    uid: int
+    title: str
+    content: str
+    imgPath: str | None = None
+
+    @validator('title', 'content')
+    def not_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError('빈 값은 허용되지 않습니다.')
+        return v
+
+class UpdateBoard(BaseModel):
+    title: str
+    content: str
+    imgPath: str | None = None
+    updatedAt: Optional[datetime] = datetime.now()
+
+    @validator('title', 'content')
+    def not_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError('빈 값은 허용되지 않습니다.')
+        return v
 
 
 class Reply(BaseModel):

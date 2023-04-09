@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table, Date, DateTime
+from sqlalchemy import MetaData, Column, Integer, String, Text, ForeignKey, Table, Date, DateTime
+from sqlalchemy.orm import relationship
 from app.database import Base
-from sqlalchemy import MetaData
 from app.database import engine
 from datetime import datetime
 
@@ -14,8 +14,9 @@ class User(Base):
     password = Column('password', String(100))
     username = Column('username', String(100))
     email = Column('email', String(100))
-    auth = Column('auth', String(100))
+    auth = Column('auth', String(100), default='user')
     createdAt = Column('createdAt', DateTime, default=datetime.now())
+    updatedAt = Column('updatedAt', DateTime, default=datetime.now())
 
 user_table = Table(
     'tb_user',
@@ -26,7 +27,8 @@ user_table = Table(
     Column('username', String(100), nullable=False),
     Column('email', String(100), nullable=False),
     Column('auth', String(100), nullable=False),
-    Column('createdAt', String(100), default=datetime.now())
+    Column('createdAt', DateTime, default=datetime.now()),
+    Column('updatedAt', DateTime, default=datetime.now())
 )
 
 class Category(Base):
@@ -54,6 +56,7 @@ class Board(Base):
     updatedAt = Column('updatedAt', DateTime, default=datetime.now())
     hit = Column('hit', Integer, default=0)
     imgPath = Column('imgPath', String(100))
+    # user = relationship("tb_user", backref='writer')
 
 board_table = Table(
     'tb_board',
@@ -91,5 +94,4 @@ reply_table = Table(
     Column('updatedAt', DateTime, default=datetime.now())
 )
 
-
-metadata.create_all(engine)
+# metadata.create_all(engine)

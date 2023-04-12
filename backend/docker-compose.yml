@@ -1,0 +1,10 @@
+version: "1"
+
+services:
+  fastapi:
+    image: fastapi
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+    ports:
+      - 90:8080
+    volumes:
+      - ./app:/dev/app

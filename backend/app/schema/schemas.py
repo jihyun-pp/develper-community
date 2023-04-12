@@ -1,6 +1,9 @@
+import uuid
+
 from pydantic import BaseModel, validator, EmailStr
 from datetime import datetime
 from typing import Optional
+import uuid
 
 class User(BaseModel):
     uid: int
@@ -104,3 +107,16 @@ class Reply(BaseModel):
 
     class Config:
         orm_mode = True
+
+class InsertReply(BaseModel):
+    # bid: int
+    # uid: int
+    reply: int
+    createdAt: Optional[datetime] = datetime.now()
+    updatedAt: Optional[datetime] = datetime.now()
+
+    @validator('reply')
+    def not_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError('빈 값은 허용되지 않습니다.')
+        return v

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from datetime import datetime, timedelta
 
@@ -13,10 +14,10 @@ router = APIRouter(
     prefix='/api/board',
 )
 
-@router.get('/list', response_model=list[schema.Board])
-def all_contents(db: Session = Depends(get_db)):
-    result = crud.get_contents_list(db=db)
-    return result
+@router.get('/list')
+def all_contents(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
+    res = crud.get_contents_list(db=db, skip=skip, limit=limit)
+    return res
 
 @router.get("/user/{uid}")
 def user_contents(uid: int, db: Session = Depends(get_db)):
@@ -56,11 +57,12 @@ def update_board(bid: int, board: schema.UpdateBoard, db: Session = Depends(get_
     return result
 
 
-@router.post("/delete")
-def delete_board(bid: int, db: Session = Depends(get_db)):
+@router.delete("/delete")
+async def delete_board(bid: int, db: AsyncSession = Depends(get_db)):
     try:
-        result = crud.delete_board(db=db, bid=bid)
+        result = await crud.delete_board(db=db, bid=bid)
     except Exception as e:
         result = {"result": e}
     return result
+
 

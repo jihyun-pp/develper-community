@@ -41,6 +41,12 @@ def get_userid(user_id: str, db: AsyncSession = Depends(get_db)):
     return user
 
 
+@router.post("/contests")
+def user_contents(uid: int, db: Session = Depends(get_db)):
+    result = crud.get_user_contents(db=db, uid=uid)
+    return result
+
+
 @router.post("/login", response_model=schema.Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

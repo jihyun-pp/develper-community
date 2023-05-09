@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.model import User, Board
+from app.model import User
 from sqlalchemy import select, text
 import app.schema.schemas as schema
 from passlib.context import CryptContext
@@ -33,21 +33,3 @@ def modify_user(db: AsyncSession, user_id: str, username: str):
     a.username = username
     db.commit()
     return a.username
-
-
-def get_user_contents(db: Session, uid: int):
-    res = {}
-    try:
-        data = db.query(Board).filter(Board.uid==uid).order_by(Board.bid.desc())
-
-        count = data.count()
-        user_contents = data.all()
-
-        res['status'] = 'S'
-        res['count'] = count
-        res['data'] = user_contents
-
-    except Exception as e:
-        res['status'] = e
-
-    return res

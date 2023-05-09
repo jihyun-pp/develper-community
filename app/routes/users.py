@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import app.schema.schemas as schema
-from app.crud import user as crud
+from app.crud import users as crud
 from app.database import get_db
 
 router = APIRouter(

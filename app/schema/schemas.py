@@ -6,10 +6,10 @@ from typing import Optional
 
 class User(BaseModel):
     uid: int
-    user_id: str
-    password: str
-    username: str
     email: str
+    password: str
+    nickname: str
+    birth: int
     auth: Optional[str] = None
     createdAt: datetime
     updatedAt: datetime
@@ -17,22 +17,17 @@ class User(BaseModel):
     class Config:
         orm_mode = True
 
-class CreateUser(BaseModel):
-    user_id: str
+class NewUser(BaseModel):
+    email: EmailStr
     password1: str
     password2: str
-    username: str
-    email: EmailStr
+    nickname: str
+    birth: int
 
-    @validator('user_id', 'password1', 'username', 'email')
+    @validator('email', 'password1', 'nickname')
     def not_empty(cls, v):
         if not v or not v.strip():
             raise ValueError('빈 값은 허용되지 않습니다.')
-        return v
-
-    @validator('user_id')
-    def userid_alphanumeric(cls, v):
-        assert v.isalnum(), 'must be alphanumeric'
         return v
 
     @validator('password2')
@@ -46,3 +41,13 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     username: str
+
+class ReqEditInfo(BaseModel):
+    token: str
+    nickname: str
+    birth: int
+
+class ReqEditPw(BaseModel):
+    token: str
+    password: str
+    password_confirm: str

@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from app.model import User
 import app.schema.schemas as schema
 
-def create_user(db: Session, _create_user: schema.CreateUser):
+def create_user(db: Session, _create_user: schema.NewUser):
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     c_user = User(
         user_id=_create_user.user_id,
@@ -15,7 +15,7 @@ def create_user(db: Session, _create_user: schema.CreateUser):
     db.add(c_user)
     db.commit()
 
-def get_existing_user(db: Session, _create_user: schema.CreateUser):
+def get_existing_user(db: Session, _create_user: schema.NewUser):
     return db.query(User).filter(User.user_id == _create_user.user_id).first()
 
 def get_user(db: Session, user_id: str):

@@ -5,7 +5,7 @@ from app.core.exceptions import DecodeTokenException, ExpiredTokenException
 
 class Token:
     @staticmethod
-    def encode(payload: dict, expire_period: int = 3600*24) -> str:
+    def encode(payload: dict, expire_period: int = 3600) -> str:
         token = jwt.encode(
             payload={
                 **payload,
@@ -13,7 +13,7 @@ class Token:
             },
             key=environ('JWT_SECRET_KEY'),
             algorithm=environ('JWT_ALGORITHM'),
-        ).decode("utf8")
+        )
         return token
 
     @staticmethod

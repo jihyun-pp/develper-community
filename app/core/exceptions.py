@@ -48,3 +48,8 @@ class ExpiredTokenException(CustomException):
     code = 400
     error_code = 10001
     message = "expired token"
+
+class DuplicateEmailException(CustomException):
+    code = HTTPStatus.CONFLICT
+    error_code = HTTPStatus.CONFLICT
+    message = 'duplicate email'

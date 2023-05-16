@@ -61,3 +61,14 @@ class UserCrud:
             result['message'] = str(e)
 
         return result
+
+
+    def get_user_info(self, db: Session, token: str):
+        try:
+            email = Token.decode(token=token)
+
+            user = db.query(User).filter(User.email == email).first()
+            return user
+
+        except Exception as e:
+            return str(e)

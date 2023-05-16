@@ -35,9 +35,11 @@ async def create_new_user(req: RequestCreateUser, db: Session = Depends(get_db))
     return res
 
 
-@router.post('/info', tags=['USER'], summary='내 정보 관리')
+@router.post('/info', tags=['USER'], summary='유저 정보')
 async def get_user_info(token: str, db: Session = Depends(get_db)):
-    pass
+    user = UserCrud().get_user_info(db=db, token=token)
+    return user
+
 
 @router.post('/edit/info', tags=['USER'], summary='내 정보 변경')
 async def edit_user_info(_edit_user: schema.ReqEditInfo, db: Session = Depends(get_db)):

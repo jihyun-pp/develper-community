@@ -6,15 +6,24 @@ from app.main import app
 
 client = TestClient(app)
 
-def test_root():
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.json() == {"msg": "Test! Hello!"}
-
 @pytest.mark.asyncio
-async def test_root():
-    # 비동기 테스트
+async def test_new_user():
     async with AsyncClient(base_url="http://127.0.0.1:9000") as ac:
-        response = await ac.get("/")
-        assert response.status_code == 200
-        assert response.json() == {"msg": "Hello World"}
+        response = await ac.post(
+            "/users/new",
+            content=json.dumps(
+                {
+                    "email": "user1@example.com",
+                    "password": "1234",
+                    "password_confirm": "1234",
+                    "nickname": "user1",
+                    "birth": 1998
+                }
+            ),
+        )
+        assert response.status_code != 200
+        assert response.json() == {
+            "id": "foobar",
+            "title": "Foo Bar",
+            "description": "The Foo Barters",
+        }

@@ -2,14 +2,13 @@ from typing import Generator
 import pytest
 from fastapi.testclient import TestClient
 
-from app.database import get_db
+from app.database import SessionLocal
 from app.main import app
 
 
 @pytest.fixture(scope="session")
 def db() -> Generator:
-    db = get_db()
-    yield db
+    yield SessionLocal()
 
 
 @pytest.fixture(scope="module")
